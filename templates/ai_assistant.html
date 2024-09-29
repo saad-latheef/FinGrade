@@ -1,0 +1,65 @@
+<!-- templates/ai_assistant.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow">
+    <h2 class="text-xl font-semibold mb-2">AI Financial Assistant</h2>
+    <div id="chat-box" class="h-80 overflow-y-auto mb-4 p-4 border rounded">
+        {% for message in chat_messages %}
+            <div class="flex {% if message.sender == 'user' %}justify-end{% else %}justify-start{% endif %} mb-2">
+                <div class="max-w-3/4 p-2 rounded {% if message.sender == 'user' %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-800{% endif %}">
+                    {{ message.text }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <form method="POST" id="chat-form" class="flex space-x-2">
+        <input type="text" name="message" id="message" placeholder="Ask a financial question..." required class="border p-2 rounded w-full">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
+    </form>
+</div>
+
+<!-- Optional: AJAX for real-time chat without page reload -->
+<script>
+    const chatForm = document.getElementById('chat-form');
+    const chatBox = document.getElementById('chat-box');
+
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const messageInput = document.getElementById('message');
+        const message = messageInput.value.trim();
+        if (message === '') return;
+
+        // Append user message
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.classList.add('flex', 'justify-end', 'mb-2');
+        userMessageDiv.innerHTML = `<div class="max-w-3/4 p-2 rounded bg-blue-500 text-white">${message}</div>`;
+        chatBox.appendChild(userMessageDiv);
+
+        // Clear input
+        messageInput.value = '';
+
+        // Send message to backend
+        fetch('{{ url_for("api_get_chatbot_response") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Append bot response
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.classList.add('flex', 'justify-start', 'mb-2');
+            botMessageDiv.innerHTML = `<div class="max-w-3/4 p-2 rounded bg-gray-200 text-gray-800">${data.response}</div>`;
+            chatBox.appendChild(botMessageDiv);
+
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+{% endblock %}

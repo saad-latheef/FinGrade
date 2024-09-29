@@ -1,0 +1,83 @@
+<!-- templates/dashboard.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold mb-2">Expense Breakdown</h2>
+        <canvas id="expenseBreakdownChart"></canvas>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+        <h2 class="text-xl font-semibold mb-2">Income vs Expenses</h2>
+        <canvas id="incomeExpensesChart"></canvas>
+        
+        <form method="GET" class="mb-4">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Refresh</button>
+        </form>
+
+        {% if advice %}
+        <div class="mt-4 p-4 bg-gray-100 rounded">
+            <h3 class="text-lg font-semibold mb-2">AI Advice</h3>
+            <p>{{ advice }}</p>
+        </div>
+        {% endif %}
+
+</div>
+
+<div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-sm font-medium">Remaining Budget</h3>
+        <p class="text-2xl font-bold">₹{{ remaining_budget }}</p>
+        <p class="text-xs text-gray-500">{{ 'Positive' if remaining_budget > 0 else 'Negative' }} from income</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-sm font-medium">Total Savings</h3>
+        <p class="text-2xl font-bold">₹{{ savings }}</p>
+        <p class="text-xs text-gray-500">Percentage of income</p>
+    </div>
+    <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-sm font-medium">Expense Trend</h3>
+        <p class="text-2xl font-bold">{{ 'Overspending' if total_expenses > income else 'On Track' }}</p>
+        <p class="text-xs text-gray-500">{{ 'Reduce expenses' if total_expenses > income else 'Keep it up!' }}</p>
+    </div>
+</div>
+
+<script>
+    // Income vs Expenses Chart
+    const incomeExpensesCtx = document.getElementById('incomeExpensesChart').getContext('2d');
+    const incomeExpensesChart = new Chart(incomeExpensesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Income', 'Expenses', 'Savings'],
+            datasets: [{
+                label: 'Amount ',
+                data: [{{ income }}, {{ total_expenses }}, {{ savings }}],
+                backgroundColor: ['#4BC0C0', '#FF6384', '#36A2EB']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true
+        }
+    });
+
+    // Expense Breakdown Chart
+    const expenseBreakdownCtx = document.getElementById('expenseBreakdownChart').getContext('2d');
+    const expenseBreakdownChart = new Chart(expenseBreakdownCtx, {
+        type: 'pie',
+        data: {
+            labels: [{% for expense in expenses %}'{{ expense.category }}',{% endfor %}],
+            datasets: [{
+                data: [{% for expense in expenses %}{{ expense.amount }},{% endfor %}],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true
+        }
+    });
+</script>
+{% endblock %}

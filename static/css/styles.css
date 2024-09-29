@@ -1,0 +1,48 @@
+/* static/css/styles.css */
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1a202c;
+    color: #cbd5e0;
+}
+
+body.dark-mode .bg-white {
+    background-color: #2d3748;
+}
+
+body.dark-mode .bg-gray-100 {
+    background-color: #4a5568;
+}
+
+.toggle {
+    width: 40px;
+    height: 20px;
+    position: relative;
+    -webkit-appearance: none;
+    background: #c6c6c6;
+    outline: none;
+    border-radius: 20px;
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+.toggle:checked {
+    background: #4f46e5;
+}
+
+.toggle::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    top: 1px;
+    left: 1px;
+    background: white;
+    transition: 0.3s;
+}
+
+.toggle:checked::before {
+    transform: translateX(20px);
+}
+

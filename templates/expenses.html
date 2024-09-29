@@ -1,0 +1,26 @@
+<!-- templates/expenses.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow">
+    <h2 class="text-xl font-semibold mb-2">Expense Tracker</h2>
+    <form method="POST" class="mb-4">
+        <div class="flex space-x-2">
+            <input type="text" name="category" placeholder="Category" required class="border p-2 rounded w-full">
+            <input type="number" name="amount" placeholder="Amount" step="0.01" required class="border p-2 rounded w-full">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Expense</button>
+        </div>
+    </form>
+
+    <h3 class="text-lg font-semibold mb-2">Expense List</h3>
+    <ul>
+        {% for expense in expenses %}
+        <li class="flex justify-between p-2 bg-gray-100 rounded mb-1">
+            <span>{{ expense.category }}</span>
+            <span>₹{{ expense.amount }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

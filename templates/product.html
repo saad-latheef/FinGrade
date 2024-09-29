@@ -1,0 +1,35 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow">
+    <h2 class="text-xl font-semibold mb-2">Product Assistant</h2>
+    <form method="POST" class="mb-4">
+        <div class="mb-4">
+            <label for="risk" class="block mb-2">What do you seek?</label>
+            <input type="name" name="seek" id="seek1" placeholder="Enter Product Name" required class="border p-2 rounded w-full">
+        </div>
+        <div class="mb-4">
+            <label for="amount" class="block mb-2">What is the desired deposit amount?</label>
+            <input type="number" name="depo" id="depo1" placeholder="Enter amount" required class="border p-2 rounded w-full">
+        </div>
+        <div class="mb-4"></div>
+            <label for="amount" class="block mb-2">Further payment</label>
+            <input type="number" name="furth" id="furth" placeholder="Further payment" required class="border p-2 rounded w-full">
+        </div>
+        <div class="mb-4">
+            <label for="amount" class="block mb-2">How long do you wish to pay?</label>
+            <input type="number" name="year" id="year1" placeholder="Enter No.of Years" required class="border p-2 rounded w-full">
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update details</button>
+    </form>
+
+    {% if advice %}
+    <div class="mt-4 p-4 bg-gray-100 rounded">
+        <h3 class="text-lg font-semibold mb-2">AI Advice</h3>
+        <p>{{ advice }}</p>
+    </div>
+    {% endif %}
+    
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!-- templates/investments.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-white p-4 rounded shadow">
+    <h2 class="text-xl font-semibold mb-2">Investment Advisor</h2>
+    <form method="POST" class="mb-4">
+        <div class="mb-4">
+            <label for="risk" class="block mb-2">Risk Tolerance:</label>
+            <select name="risk" id="risk" required class="border p-2 rounded w-full">
+                <option value="">Select Risk Level</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="amount" class="block mb-2">Investment Amount:</label>
+            <input type="number" name="amount" id="amount" placeholder="Enter amount" required class="border p-2 rounded w-full">
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Get Advice</button>
+    </form>
+
+    {% if advice %}
+    <div class="mt-4 p-4 bg-gray-100 rounded">
+        <h3 class="text-lg font-semibold mb-2">AI Investment Advice</h3>
+        <p>{{ advice }}</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
