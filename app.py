@@ -66,7 +66,6 @@ def get_investment_advice(risk, amount, income, savings):
         'medium': responses2,
         'high': responses3
     }
-    print(advice_options)
     return advice_options.get(risk, "Invalid risk level provided.")
 
 #AI product advice
@@ -113,7 +112,6 @@ def dashboard():
     if request.method == 'GET':
         global savings
         advices = get_refreshed_advice(income, savings, total_expenses)
-        print(advices)
     return render_template('dashboard.html',
                            income=income,
                            expenses=expenses_data,
