@@ -126,7 +126,7 @@ def dashboard():
 @app.route('/expenses', methods=['GET', 'POST'])
 def expenses():
     global expenses_data
-    if request.method == 'POST:
+    if request.method == 'POST':
         category = request.form.get('category')
         amount = float(request.form.get('amount', 0))
         if category and amount:
